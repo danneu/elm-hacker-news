@@ -1,6 +1,6 @@
 # elm-hacker-news
 
-Online demo: <https://danneu.com/elm-hacker-news>
+**Online demo**: <https://elmcombinator.surge.sh>
 
 A Hacker News client (SPA) implemented with [Elm](https://elm-lang.org/).
 

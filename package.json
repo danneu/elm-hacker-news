@@ -2,14 +2,12 @@
     "private": true,
     "scripts": {
         "start": "rm -rf .parcel-cache && parcel index.html",
-        "build": "rm -rf dist && parcel build --public-url 'elm-hacker-news/' index.html",
-        "postbuild": "mkdir -p dist/elm-hacker-news && mv dist/*.{png,css,js,map} dist/elm-hacker-news/",
-        "gh-pages": "npm run build && echo 'running gh-pages...' && gh-pages -d dist"
+        "build": "rm -rf dist && parcel build index.html",
+        "surge": "npm run build && surge dist elmcombinator.surge.sh"
     },
     "devDependencies": {
         "@parcel/transformer-elm": "^2.4.0",
         "@parcel/transformer-sass": "^2.4.0",
-        "elm": "^0.19.1-5",
-        "gh-pages": "^4.0.0"
+        "elm": "^0.19.1-5"
     }
 }
