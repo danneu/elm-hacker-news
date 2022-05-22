@@ -1,0 +1,2 @@
+const CACHE_NAME="hn-api";function isCacheableApiRequest(e){return"GET"===e.method&&"hacker-news.firebaseio.com"===new URL(e.url).hostname}self.addEventListener("install",(e=>{e.waitUntil(caches.open("hn-api"))})),self.addEventListener("fetch",(e=>{if(isCacheableApiRequest(e.request))return e.respondWith(caches.open("hn-api").then((t=>t.match(e.request).then((n=>{const s=fetch(e.request).then((n=>(t.put(e.request,n.clone()),n)));return n||s})))))}));
+//# sourceMappingURL=service-worker.js.map
