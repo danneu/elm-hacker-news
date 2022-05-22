@@ -3,10 +3,11 @@
     "scripts": {
         "start": "rm -rf .parcel-cache && parcel index.html",
         "build": "rm -rf dist && parcel build index.html",
-        "surge": "npm run build && surge dist elmcombinator.surge.sh"
+        "surge": "npm run build && cp dist/index.html dist/200.html && surge dist elmcombinator.surge.sh"
     },
     "devDependencies": {
         "@parcel/transformer-elm": "^2.4.0",
+        "@parcel/transformer-inline-string": "^2.4.0",
         "@parcel/transformer-sass": "^2.4.0",
         "elm": "^0.19.1-5"
     }
