@@ -6,6 +6,9 @@ A Hacker News client (SPA) implemented with [Elm](https://elm-lang.org/).
 
 Uses HN's offical API: <https://github.com/HackerNews/API>
 
+![screenshot 1](./docs/screenshot1.png)
+![screenshot 2](./docs/screenshot2.png)
+
 ## Technical notes
 
 ### Request spam
