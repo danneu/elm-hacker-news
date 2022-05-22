@@ -1,0 +1,272 @@
+@import '_reset.css';
+
+:root {
+    --hn-bg: #f6f6f0;
+    --hn-gray: #696969;
+    --hn-orange: #ed702d;
+}
+
+body {
+    background-color: var(--hn-bg);
+    font-family: Verdana, Geneva, sans-serif;
+}
+
+h1 {
+    font-size: 2rem;
+    line-height: calc(2rem * 3);
+}
+
+h2 {
+    font-size: 1.5rem;
+    line-height: calc(1.5rem * 3);
+}
+
+h3 {
+    font-size: 1.25rem;
+    line-height: calc(1.25rem * 3);
+}
+
+p {
+    margin: 0 0 9px;
+    line-height: 18px;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+// MAIN CONTENT
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+// Pushes footer to bottom
+.spacer {
+    flex: 1;
+    min-height: 25vh;
+}
+
+main {
+    padding: 0 2em;
+}
+
+// GLOBAL FOOTER
+
+.global-footer {
+    color: var(--hn-gray);
+    text-align: center;
+    a {
+        color: var(--hn-gray);
+    }
+    svg {
+        vertical-align: middle;
+    }
+}
+
+// HOMEPAGE
+
+.HomePage {
+    color: var(--hn-gray);
+
+    li {
+        margin-bottom: 1rem;
+    }
+
+    .story {
+        display: flex;
+        align-items: flex-start;
+        word-break: break-word;
+    }
+
+    aside {
+        min-width: 150px;
+    }
+}
+
+.pagination {
+    text-align: center;
+    margin: 5rem 0;
+}
+
+// NAVBAR
+
+.navbar {
+    background-color: var(--hn-orange);
+    display: flex;
+    align-items: center;
+    padding: 0.5rem;
+    margin-bottom: 1em;
+
+    a {
+        color: black;
+        text-decoration: none;
+        text-align: center;
+
+        &:hover {
+            text-decoration: underline;
+        }
+
+        &.brand {
+            font-weight: bold;
+        }
+    }
+
+    img,
+    svg {
+        vertical-align: middle;
+    }
+
+    section {
+        a {
+            margin-right: 0.5rem;
+
+            &:last-child {
+                margin-right: 0;
+            }
+        }
+    }
+
+    section:last-child {
+        margin-left: auto;
+    }
+}
+
+.navbar a.icon {
+    display: inline-block;
+}
+
+.navbar a.active {
+    text-decoration: underline;
+}
+
+// STORY PAGE
+
+.comment li {
+    margin: 0;
+}
+.comment p {
+    margin-bottom: 0.5rem;
+}
+
+.comment p:last-child {
+    margin-bottom: 1rem;
+}
+
+button,
+.gutter {
+    cursor: pointer;
+}
+
+.gutter:hover {
+    background-color: #ccc;
+}
+
+.comment-replies {
+    display: flex;
+}
+.comment-replies > ul {
+    width: 100%;
+}
+.comment-replies > .gutter {
+    width: 20px;
+}
+
+:root {
+    --r: #fd79a8;
+    --g: #55efc4;
+    --b: #74b9ff;
+}
+
+.comment-replies > .gutter {
+    border-left: 5px solid var(--b);
+}
+.comment-replies .comment-replies > .gutter {
+    border-left: 5px solid var(--r);
+}
+.comment-replies .comment-replies .comment-replies > .gutter {
+    border-left: 5px solid var(--g);
+}
+.comment-replies .comment-replies .comment-replies .comment-replies > .gutter {
+    border-left: 5px solid var(--b);
+}
+.comment-replies
+    .comment-replies
+    .comment-replies
+    .comment-replies
+    .comment-replies
+    > .gutter {
+    border-left: 5px solid var(--r);
+}
+.comment-replies
+    .comment-replies
+    .comment-replies
+    .comment-replies
+    .comment-replies
+    .comment-replies
+    > .gutter {
+    border-left: 5px solid var(--g);
+}
+
+// COMMENT
+
+.comment {
+    word-break: break-word;
+    padding-top: 1rem;
+    pre {
+        font-family: monospace;
+        white-space: pre-wrap;
+        margin-bottom: 0.5rem;
+    }
+}
+
+// REUSABLE CLASSES
+
+.byline {
+    margin-bottom: 0.5rem;
+    color: var(--hn-gray);
+    a {
+        color: unset;
+        text-decoration: none;
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+}
+@media (max-width: 550px) {
+    .HomePage aside {
+        min-width: 100px;
+    }
+    main {
+        padding: 0 0.5rem;
+    }
+    // .navbar .brand {
+    //     display: block;
+    // }
+    .navbar a {
+        min-width: 48px;
+        min-height: 48px;
+        line-height: 48px;
+        display: inline-block;
+    }
+    .navbar .brand {
+        display: none;
+    }
+    // .navbar a[title='app logo'],
+    .navbar a[title='github logo'] {
+        display: none;
+    }
+}
+
+@media (max-width: 350px) {
+    .HomePage .story {
+        flex-direction: column-reverse;
+
+        aside {
+            width: 100%;
+            text-align: right;
+        }
+    }
+}

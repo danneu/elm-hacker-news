@@ -1,0 +1,12 @@
+{
+    "private": true,
+    "scripts": {
+        "start": "parcel index.html",
+        "build": "parcel build index.html"
+    },
+    "devDependencies": {
+        "@parcel/transformer-elm": "^2.4.0",
+        "@parcel/transformer-sass": "^2.4.0",
+        "elm": "^0.19.1-5"
+    }
+}
