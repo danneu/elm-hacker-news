@@ -3,12 +3,13 @@
     "scripts": {
         "start": "rm -rf .parcel-cache && parcel index.html",
         "build": "rm -rf dist && parcel build index.html",
-        "surge": "npm run build && cp dist/index.html dist/200.html && surge dist elmcombinator.surge.sh"
+        "surge": "yarn run build && cp dist/index.html dist/200.html && surge dist elmcombinator.surge.sh"
     },
     "devDependencies": {
-        "@parcel/transformer-elm": "^2.4.0",
-        "@parcel/transformer-inline-string": "^2.4.0",
-        "@parcel/transformer-sass": "^2.4.0",
-        "elm": "^0.19.1-5"
+        "@parcel/transformer-elm": "2.4.x",
+        "@parcel/transformer-inline-string": "2.4.x",
+        "@parcel/transformer-sass": "2.4.x",
+        "elm": "^0.19.1-5",
+        "parcel": "2.4.x"
     }
 }
