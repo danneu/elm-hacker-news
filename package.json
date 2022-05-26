@@ -10,6 +10,7 @@
         "@parcel/transformer-inline-string": "2.4.x",
         "@parcel/transformer-sass": "2.4.x",
         "elm": "^0.19.1-5",
+        "elm-review": "^2.7.2",
         "parcel": "2.4.x"
     }
 }

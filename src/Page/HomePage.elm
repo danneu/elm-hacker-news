@@ -28,7 +28,6 @@ type Msg
     = RecvTime Time.Posix
     | RecvStory Int (Result Http.Error Story)
     | RecvStoryIds (Result Http.Error (List Int))
-    | ChangePage Int
 
 
 init : Api.PageType -> Maybe Int -> ( Model, Cmd Msg )
@@ -60,11 +59,6 @@ init filter maybePage =
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
-        ChangePage page ->
-            ( { model | page = page }
-            , Api.getPage Api.Top RecvStoryIds
-            )
-
         RecvTime posix ->
             ( { model | now = posix }, Cmd.none )
 

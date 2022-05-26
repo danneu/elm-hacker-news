@@ -86,7 +86,7 @@ posixToIso8601 posix =
         |> String.fromInt
         |> String.padLeft 2 '0'
     ]
-        |> String.join ""
+        |> String.concat
 
 
 viewTimeAgo : Time.Posix -> Time.Posix -> Html msg
@@ -99,20 +99,13 @@ viewTimeAgo start end =
 timeAgo : Time.Posix -> Time.Posix -> String
 timeAgo start end =
     let
+        millis : Int
         millis =
             Time.posixToMillis end - Time.posixToMillis start
 
+        minutes : Int
         minutes =
             millis // 1000 // 60
-
-        hours =
-            minutes // 60
-
-        days =
-            hours // 24
-
-        years =
-            days // 365
 
         plural : Int -> String -> String
         plural n word =
@@ -130,14 +123,31 @@ timeAgo start end =
     if minutes < 60 then
         plural minutes "minute"
 
-    else if hours < 24 then
-        plural hours "hour"
-
-    else if days < 365 then
-        plural days "day"
-
     else
-        plural years "year"
+        let
+            hours : Int
+            hours =
+                minutes // 60
+        in
+        if hours < 24 then
+            plural hours "hour"
+
+        else
+            let
+                days : Int
+                days =
+                    hours // 24
+            in
+            if days < 365 then
+                plural days "day"
+
+            else
+                let
+                    years : Int
+                    years =
+                        days // 365
+                in
+                plural years "year"
 
 
 extractDomain : String -> Maybe String

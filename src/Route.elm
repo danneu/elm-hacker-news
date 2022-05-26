@@ -1,4 +1,4 @@
-module Route exposing (Route(..), fromUrl, toString)
+module Route exposing (Route(..), fromUrl)
 
 import Api
 import Url
