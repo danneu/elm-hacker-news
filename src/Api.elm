@@ -4,20 +4,13 @@ import Comment exposing (Comment)
 import Http
 import Json.Decode as JD
 import Story exposing (Story)
-import Time
 import Url.Builder
 import User exposing (User)
-import Util
 
 
 endpoint : String
 endpoint =
     "https://hacker-news.firebaseio.com/v0"
-
-
-prettyQuery : Url.Builder.QueryParameter
-prettyQuery =
-    Url.Builder.string "pretty" "pretty"
 
 
 type PageType
@@ -36,7 +29,7 @@ getStory id tagger =
             Url.Builder.crossOrigin
                 endpoint
                 [ "item", String.fromInt id ++ ".json" ]
-                [ prettyQuery ]
+                []
     in
     Http.request
         { method = "GET"
@@ -56,7 +49,7 @@ getUser username tagger =
             Url.Builder.crossOrigin
                 endpoint
                 [ "user", username ++ ".json" ]
-                [ prettyQuery ]
+                []
     in
     Http.request
         { method = "GET"
@@ -96,7 +89,7 @@ getPage pageType tagger =
             Url.Builder.crossOrigin
                 endpoint
                 [ path ]
-                [ prettyQuery ]
+                []
     in
     Http.request
         { method = "GET"
@@ -116,7 +109,7 @@ getComment id tagger =
             Url.Builder.crossOrigin
                 endpoint
                 [ "item", String.fromInt id ++ ".json" ]
-                [ prettyQuery ]
+                []
     in
     Http.request
         { method = "GET"
