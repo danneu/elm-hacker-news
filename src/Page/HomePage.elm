@@ -115,7 +115,9 @@ viewStory now ({ id } as webStory) =
             text ""
 
         RemoteData.Loading ->
-            text ("Fetching story " ++ String.fromInt id)
+            div
+                [ style "height" "3rem" ]
+                [ text ("Fetching story " ++ String.fromInt id) ]
 
         RemoteData.Failure _ ->
             text "Failed to load story"
