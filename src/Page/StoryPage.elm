@@ -135,11 +135,29 @@ update msg model =
                     )
 
 
+config =
+    [ ( "quot", "\"" )
+    , ( "QUOT", "\"" )
+    , ( "apos", "'" )
+    , ( "gt", ">" )
+    , ( "GT", ">" )
+    , ( "Gt", ">" )
+    , ( "lt", "<" )
+    , ( "LT", "<" )
+    , ( "Lt", "<" )
+    , ( "amp", "&" )
+    , ( "AMP", "&" )
+    , ( "nbsp", "\u{00A0}" )
+    ]
+        |> Dict.fromList
+        |> Html.Parser.customCharRefs
+
+
 viewLoadedComment : Maybe Time.Posix -> Set Int -> Comment -> List (Html Msg)
 viewLoadedComment now collapsedIds comment =
     let
         html =
-            case Html.Parser.run ("<p>" ++ comment.text) of
+            case Html.Parser.run config ("<p>" ++ comment.text) of
                 Err _ ->
                     [ text "(Parse error)" ]
 
@@ -253,7 +271,7 @@ viewStoryInfo story maybeNow =
                         text ""
                 ]
             , story.text
-                |> Maybe.andThen (\html -> Html.Parser.run html |> Result.toMaybe)
+                |> Maybe.andThen (\html -> Html.Parser.run config html |> Result.toMaybe)
                 |> Maybe.map Html.Parser.nodesToHtml
                 |> Maybe.map (\nodes -> div [ class "story-text" ] nodes)
                 |> Maybe.withDefault (text "")
