@@ -271,7 +271,7 @@ viewStoryInfo story maybeNow =
                             [ href url ]
                             [ text story.title
                             ]
-                        , small [ style "font-size" "1rem", style "color" "gray" ] [ text (" (" ++ domain ++ ")") ]
+                        , small [] [ text (" (" ++ domain ++ ")") ]
                         ]
                     ]
 

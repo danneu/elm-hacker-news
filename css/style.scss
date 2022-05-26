@@ -153,6 +153,11 @@ main {
 
 // STORY PAGE
 
+.StoryPage .title small {
+    font-size: 1rem;
+    color: var(--hn-gray);
+}
+
 .comment li {
     margin: 0;
 }
