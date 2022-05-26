@@ -17,6 +17,11 @@ import Time
 import Util
 
 
+reqBatchSize : Int
+reqBatchSize =
+    1
+
+
 port scrollToComment : Int -> Cmd msg
 
 
@@ -25,7 +30,9 @@ type alias Model =
     , story : WebData Story
     , collapsedIds : Set Int
     , now : Maybe Time.Posix
-    , pendingIds : List Int
+
+    -- Layman's depth-first queue when reqBatchSize == 1
+    , pendingIds : List ( Int, List Int )
     }
 
 
@@ -82,46 +89,62 @@ update msg model =
             )
 
         RecvComment parentIds id result ->
-            case result of
-                Ok comment ->
-                    ( { model
-                        | story =
-                            model.story
-                                |> RemoteData.map
-                                    (\story ->
-                                        Story.setComment
-                                            (List.append parentIds [ id ])
-                                            (RemoteData.succeed comment)
-                                            story
-                                    )
-                      }
-                    , comment
-                        |> Comment.getComments
-                        |> Dict.toList
-                        |> List.map
-                            (\( kidId, _ ) ->
-                                Api.getComment kidId (RecvComment (List.append parentIds [ id ]) kidId)
-                            )
-                        |> Cmd.batch
-                    , Nothing
-                    )
+            let
+                newPendingIds =
+                    List.append
+                        (case result of
+                            Ok comment ->
+                                comment
+                                    |> Comment.getComments
+                                    |> Dict.toList
+                                    |> List.map (\( kidId, _ ) -> ( kidId, List.append parentIds [ id ] ))
 
-                Err e ->
-                    -- TODO: Handle error
-                    ( model, Cmd.none, Nothing )
+                            _ ->
+                                []
+                        )
+                        model.pendingIds
+            in
+            ( { model
+                | story =
+                    model.story
+                        |> RemoteData.map
+                            (\story ->
+                                Story.setComment
+                                    (List.append parentIds [ id ])
+                                    (RemoteData.fromResult result)
+                                    story
+                            )
+                , pendingIds =
+                    List.drop reqBatchSize newPendingIds
+              }
+            , newPendingIds
+                |> List.take reqBatchSize
+                |> List.map
+                    (\( kidId, kidParentIds ) ->
+                        Api.getComment kidId (RecvComment kidParentIds kidId)
+                    )
+                |> Cmd.batch
+            , Nothing
+            )
 
         RecvStory result ->
             case result of
                 Ok story ->
+                    let
+                        pendingIds =
+                            story
+                                |> Story.listCommentsInOrder
+                                |> List.map (\( id, _ ) -> ( id, [] ))
+                    in
                     ( { model
                         | story =
-                            story
-                                |> RemoteData.succeed
+                            RemoteData.succeed story
+                        , pendingIds =
+                            List.drop reqBatchSize pendingIds
                       }
-                    , story
-                        |> Comment.getComments
-                        |> Dict.toList
-                        |> List.map (\( id, _ ) -> Api.getComment id (RecvComment [] id))
+                    , pendingIds
+                        |> List.take reqBatchSize
+                        |> List.map (\( id, parentIds ) -> Api.getComment id (RecvComment parentIds id))
                         -- HACK: Request the stories at the top first
                         |> List.reverse
                         |> Cmd.batch
@@ -173,13 +196,7 @@ viewLoadedComment now collapsedIds comment =
                 text ""
 
             Just end ->
-                a
-                    [ href ("https://news.ycombinator.com/item?id=" ++ String.fromInt comment.id)
-                    , target "_blank"
-                    , rel "noopener noreferrer"
-                    ]
-                    [ Util.viewTimeAgo comment.time end
-                    ]
+                Comment.toHnAnchor comment.id (Util.viewTimeAgo comment.time end)
         ]
     , div [] html
     , if Comment.replyCount comment == 0 then
@@ -231,7 +248,9 @@ viewComment now collapsedIds id data =
                 viewLoadedComment now collapsedIds comment
 
             RemoteData.Failure _ ->
-                [ text "Failed to load comment" ]
+                [ text "Failed to load comment: "
+                , Comment.toHnAnchor id (text (String.fromInt id))
+                ]
         )
 
 

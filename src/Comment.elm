@@ -1,4 +1,4 @@
-module Comment exposing (Comment, Comments(..), decoder, getComments, replyCount, setComment)
+module Comment exposing (Comment, Comments(..), decoder, getComments, replyCount, setComment, toHnAnchor)
 
 {-| A comment from HN API.
 
@@ -11,6 +11,8 @@ Notes:
 -}
 
 import Dict exposing (Dict)
+import Html exposing (Html, a)
+import Html.Attributes exposing (href, rel, target)
 import Json.Decode as JD
 import RemoteData exposing (WebData)
 import Time
@@ -121,3 +123,13 @@ decoder =
             , JD.succeed False
             ]
         )
+
+
+toHnAnchor : Int -> Html msg -> Html msg
+toHnAnchor id child =
+    a
+        [ href ("https://news.ycombinator.com/item?id=" ++ String.fromInt id)
+        , target "_blank"
+        , rel "noopener noreferrer"
+        ]
+        [ child ]
