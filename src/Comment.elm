@@ -13,7 +13,8 @@ Notes:
 import Dict exposing (Dict)
 import Html exposing (Html, a)
 import Html.Attributes exposing (href, rel, target)
-import Json.Decode as JD
+import Json.Decode as D
+import Json.Decode.Pipeline as P
 import RemoteData exposing (WebData)
 import Time
 import Util
@@ -88,41 +89,35 @@ setComment ids comment (Comments comments) =
                     Comments comments
 
 
-decoder : JD.Decoder Comment
+decoder : D.Decoder Comment
 decoder =
-    JD.map7 Comment
-        (JD.field "id" JD.int)
-        (JD.oneOf
-            [ JD.field "by" JD.string
-            , JD.succeed "(Dead)"
-            ]
-        )
-        (JD.field "time" Util.posixDecoder)
+    D.succeed Comment
+        |> P.required "id" D.int
+        |> P.optional "by" D.string "(Dead)"
+        |> P.required "time" Util.posixDecoder
         -- if "dead" exists and "dead"==true, then text key will be missing
-        (JD.oneOf
-            [ JD.field "text" JD.string
-            , JD.succeed "(Dead)"
-            ]
-        )
-        (JD.oneOf
-            [ JD.field "kids" (JD.list JD.int)
-            , JD.succeed []
-            ]
-            |> JD.map
-                (\ids ->
-                    ids
-                        |> List.map (\id -> ( id, RemoteData.Loading ))
-                        |> Dict.fromList
-                        |> Comments
-                )
-        )
-        (JD.field "parent" JD.int)
-        (JD.oneOf
-            [ JD.field "deleted" (JD.succeed True)
-            , JD.field "dead" (JD.succeed True)
-            , JD.succeed False
-            ]
-        )
+        |> P.optional "text" D.string "(Dead)"
+        |> P.custom
+            (D.oneOf
+                [ D.field "kids" (D.list D.int)
+                , D.succeed []
+                ]
+                |> D.map
+                    (\ids ->
+                        ids
+                            |> List.map (\id -> ( id, RemoteData.Loading ))
+                            |> Dict.fromList
+                            |> Comments
+                    )
+            )
+        |> P.required "parent" D.int
+        |> P.custom
+            (D.oneOf
+                [ D.field "deleted" (D.succeed True)
+                , D.field "dead" (D.succeed True)
+                , D.succeed False
+                ]
+            )
 
 
 toHnAnchor : Int -> Html msg -> Html msg
