@@ -266,7 +266,7 @@ viewStoryInfo story maybeNow =
                             Util.extractDomain url
                                 |> Maybe.withDefault "--"
                     in
-                    [ h3 [ class "title" ]
+                    [ h2 [ class "title" ]
                         [ a
                             [ href url ]
                             [ text story.title

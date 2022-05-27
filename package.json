@@ -6,11 +6,11 @@
         "surge": "yarn run build && cp dist/index.html dist/200.html && surge dist elmcombinator.surge.sh"
     },
     "devDependencies": {
-        "@parcel/transformer-elm": "2.4.x",
-        "@parcel/transformer-inline-string": "2.4.x",
-        "@parcel/transformer-sass": "2.4.x",
+        "@parcel/transformer-elm": "^2.6.0",
+        "@parcel/transformer-inline-string": "^2.6.0",
+        "@parcel/transformer-sass": "^2.6.0",
         "elm": "^0.19.1-5",
         "elm-review": "^2.7.2",
-        "parcel": "2.4.x"
+        "parcel": "^2.6.0"
     }
 }
