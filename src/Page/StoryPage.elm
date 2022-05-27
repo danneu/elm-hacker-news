@@ -158,6 +158,7 @@ update msg model =
                     )
 
 
+config : Html.Parser.Config
 config =
     [ ( "quot", "\"" )
     , ( "QUOT", "\"" )
