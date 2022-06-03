@@ -26,19 +26,13 @@ type alias Model =
 
 init : () -> Url.Url -> Nav.Key -> ( Model, Cmd Msg )
 init _ url key =
-    let
-        ( model, cmd ) =
-            { key = key
-            , url = url
-            , page = Nothing
-            , subtitle = Nothing
-            , filter = Api.Top
-            }
-                |> setRoute (Route.fromUrl url)
-    in
-    ( model
-    , cmd
-    )
+    { key = key
+    , url = url
+    , page = Nothing
+    , subtitle = Nothing
+    , filter = Api.Top
+    }
+        |> setRoute (Route.fromUrl url)
 
 
 setRoute : Maybe Route.Route -> Model -> ( Model, Cmd Msg )
@@ -201,9 +195,7 @@ viewNavbar model =
                 , class "icon"
                 , style "margin-right" ".4rem"
                 , title "app logo"
-                , style "height" (String.fromInt iconSize ++ "px")
-
-                -- , style "display" "inline-block"
+                , height iconSize
                 ]
                 [ Icon.logo iconSize ]
             , a [ href "/", class "brand" ] [ text "Hacker News" ]
@@ -214,7 +206,7 @@ viewNavbar model =
             , a [ href "/jobs", classList [ ( "active", model.filter == Api.Job ) ] ] [ text "Jobs" ]
             ]
         , section []
-            [ a [ href "https://github.com/danneu/elm-hacker-news", title "github logo", class "icon" ] [ Icon.github 24 ]
+            [ a [ href "https://github.com/danneu/elm-hacker-news", title "github logo", class "icon" ] [ Icon.github iconSize ]
             ]
         ]
 
@@ -222,7 +214,7 @@ viewNavbar model =
 viewFooter : Html Msg
 viewFooter =
     let
-        size =
+        iconSize =
             18
     in
     footer
@@ -231,11 +223,11 @@ viewFooter =
             [ text "Built by danneu with "
             , a
                 [ href "https://elm-lang.org", title "elm-lang.org logo" ]
-                [ Icon.elm size ]
+                [ Icon.elm iconSize ]
             ]
         , p []
             [ text "Source code on "
-            , a [ href "https://github.com/danneu/elm-hacker-news", title "Github.com logo" ] [ Icon.github size ]
+            , a [ href "https://github.com/danneu/elm-hacker-news", title "Github.com logo" ] [ Icon.github iconSize ]
             ]
         ]
 

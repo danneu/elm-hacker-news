@@ -41,7 +41,7 @@ type alias Story =
     , score : Int
     , url : Maybe String
 
-    -- comments are unordered, so we use kidIds to story the original comment order :/
+    -- comments are unordered, so we use kidIds to store the original comment order :/
     , kidIds : List Int
     , comments : Comments
     , replyCount : Int
@@ -81,7 +81,7 @@ listCommentsInOrder story =
 
 decoder : D.Decoder Story
 decoder =
-    D.succeed Story
+    (D.succeed Story
         -- type: story | job | poll
         |> P.required "type" (D.string |> D.map storyTypeFromString)
         |> P.required "id" D.int
@@ -91,19 +91,19 @@ decoder =
         |> P.required "score" D.int
         |> P.optional "url" (D.string |> D.map Just) Nothing
         |> P.optional "kids" (D.list D.int) []
-        |> P.custom
-            (D.oneOf
-                [ D.field "kids" (D.list D.int)
-                , D.succeed []
-                ]
-                |> D.map
-                    (\ids ->
-                        ids
-                            |> List.map (\id -> ( id, RemoteData.Loading ))
-                            |> Dict.fromList
-                            |> Comments
-                    )
-            )
+        -- Post-process .comments instead of decoding "kids" twice.
+        |> P.hardcoded (Comments Dict.empty)
         -- e.g. type=job has no descendants key
         |> P.optional "descendants" D.int 0
         |> P.optional "text" (D.string |> D.map Just) Nothing
+    )
+        |> D.map
+            (\story ->
+                { story
+                    | comments =
+                        story.kidIds
+                            |> List.map (\id -> ( id, RemoteData.Loading ))
+                            |> Dict.fromList
+                            |> Comments
+                }
+            )
