@@ -177,8 +177,8 @@ config =
         |> Html.Parser.customCharRefs
 
 
-viewLoadedComment : Maybe Time.Posix -> Set Int -> Comment -> List (Html Msg)
-viewLoadedComment now collapsedIds comment =
+viewLoadedComment : Int -> Maybe Time.Posix -> Set Int -> Comment -> List (Html Msg)
+viewLoadedComment depth now collapsedIds comment =
     let
         html =
             case Html.Parser.run config ("<p>" ++ comment.text) of
@@ -208,6 +208,7 @@ viewLoadedComment now collapsedIds comment =
             [ class "comment-replies" ]
             [ div
                 [ class "gutter"
+                , class ("gutter-depth-" ++ String.fromInt (modBy 3 depth))
                 , onClick (CollapseComment comment.id)
                 ]
                 []
@@ -224,14 +225,14 @@ viewLoadedComment now collapsedIds comment =
                     (comment
                         |> Comment.getComments
                         |> Dict.toList
-                        |> List.map (\( id, kid ) -> ( String.fromInt id, li [] [ viewComment now collapsedIds id kid ] ))
+                        |> List.map (\( id, kid ) -> ( String.fromInt id, li [] [ viewComment (depth + 1) now collapsedIds id kid ] ))
                     )
             ]
     ]
 
 
-viewComment : Maybe Time.Posix -> Set Int -> Int -> WebData Comment -> Html Msg
-viewComment now collapsedIds id data =
+viewComment : Int -> Maybe Time.Posix -> Set Int -> Int -> WebData Comment -> Html Msg
+viewComment depth now collapsedIds id data =
     div
         [ class "comment"
 
@@ -246,7 +247,7 @@ viewComment now collapsedIds id data =
                 [ text ("Loading comment " ++ String.fromInt id) ]
 
             RemoteData.Success comment ->
-                viewLoadedComment now collapsedIds comment
+                viewLoadedComment depth now collapsedIds comment
 
             RemoteData.Failure _ ->
                 [ text "Failed to load comment: "
@@ -323,7 +324,7 @@ view model =
                                             ( String.fromInt id
                                             , li
                                                 []
-                                                [ viewComment model.now model.collapsedIds id comment ]
+                                                [ viewComment 0 model.now model.collapsedIds id comment ]
                                             )
                                         )
                                 )

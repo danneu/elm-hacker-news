@@ -190,42 +190,19 @@ button,
 .comment-replies > ul {
     width: 100%;
 }
-.comment-replies > .gutter {
+.gutter {
     width: 20px;
     border-left-width: 5px;
     border-left-style: solid;
 }
-
-.comment-replies {
-    & > .gutter {
-        border-color: var(--a);
-    }
-    .comment-replies {
-        & > .gutter {
-            border-color: var(--b);
-        }
-        .comment-replies {
-            & > .gutter {
-                border-color: var(--c);
-            }
-            .comment-replies {
-                & > .gutter {
-                    border-color: var(--a);
-                }
-                .comment-replies {
-                    & > .gutter {
-                        border-color: var(--b);
-                    }
-                    .comment-replies {
-                        & > .gutter {
-                            // --c is the final color for all further children
-                            border-color: var(--c);
-                        }
-                    }
-                }
-            }
-        }
-    }
+.gutter-depth-0 {
+    border-color: var(--a);
+}
+.gutter-depth-1 {
+    border-color: var(--b);
+}
+.gutter-depth-2 {
+    border-color: var(--c);
 }
 
 // COMMENT
