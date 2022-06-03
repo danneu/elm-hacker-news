@@ -16,6 +16,7 @@ import Html.Attributes exposing (href, rel, target)
 import Json.Decode as D
 import Json.Decode.Pipeline as P
 import RemoteData exposing (WebData)
+import Set exposing (Set)
 import Time
 import Util
 
@@ -25,9 +26,11 @@ type alias Comment =
     , by : String
     , time : Time.Posix
     , text : String
+    , directKidIds : List Int
     , comments : Comments
     , parent : Int
     , isDeleted : Bool
+    , allKidIds : Set Int
     }
 
 
@@ -81,6 +84,10 @@ setComment ids comment (Comments comments) =
                                 { subComment
                                     | comments =
                                         setComment rest comment subComment.comments
+                                    , allKidIds =
+                                        Set.union
+                                            (Set.fromList rest)
+                                            subComment.allKidIds
                                 }
                     in
                     Comments (Dict.insert id child comments)
@@ -91,25 +98,14 @@ setComment ids comment (Comments comments) =
 
 decoder : D.Decoder Comment
 decoder =
-    D.succeed Comment
+    (D.succeed Comment
         |> P.required "id" D.int
         |> P.optional "by" D.string "(Dead)"
         |> P.required "time" Util.posixDecoder
         -- if "dead" exists and "dead"==true, then text key will be missing
         |> P.optional "text" D.string "(Dead)"
-        |> P.custom
-            (D.oneOf
-                [ D.field "kids" (D.list D.int)
-                , D.succeed []
-                ]
-                |> D.map
-                    (\ids ->
-                        ids
-                            |> List.map (\id -> ( id, RemoteData.Loading ))
-                            |> Dict.fromList
-                            |> Comments
-                    )
-            )
+        |> P.optional "kids" (D.list D.int) []
+        |> P.hardcoded (Comments Dict.empty)
         |> P.required "parent" D.int
         |> P.custom
             (D.oneOf
@@ -117,6 +113,20 @@ decoder =
                 , D.field "dead" (D.succeed True)
                 , D.succeed False
                 ]
+            )
+        |> P.hardcoded Set.empty
+    )
+        |> D.map
+            (\comment ->
+                { comment
+                    | comments =
+                        comment.directKidIds
+                            |> List.map (\id -> ( id, RemoteData.Loading ))
+                            |> Dict.fromList
+                            |> Comments
+                    , allKidIds =
+                        Set.fromList comment.directKidIds
+                }
             )
 
 

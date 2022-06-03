@@ -192,6 +192,8 @@ viewLoadedComment depth now collapsedIds comment =
         [ class "byline" ]
         [ a [ href ("/users/" ++ comment.by) ] [ text comment.by ]
         , text " "
+
+        -- , span [ style "word-break" "break-all" ] [ text (Debug.toString comment.allKidIds) ]
         , case now of
             Nothing ->
                 text ""
@@ -205,7 +207,8 @@ viewLoadedComment depth now collapsedIds comment =
 
       else
         footer
-            [ class "comment-replies" ]
+            [ class "comment-replies"
+            ]
             [ div
                 [ class "gutter"
                 , class ("gutter-depth-" ++ String.fromInt (modBy 3 depth))
@@ -217,7 +220,7 @@ viewLoadedComment depth now collapsedIds comment =
                     [ onClick (CollapseComment comment.id)
                     , class "btn btn-link"
                     ]
-                    [ text "Show replies" ]
+                    [ text ("Show " ++ String.fromInt (Set.size comment.allKidIds) ++ " replies") ]
 
               else
                 Html.Keyed.ul
@@ -225,7 +228,13 @@ viewLoadedComment depth now collapsedIds comment =
                     (comment
                         |> Comment.getComments
                         |> Dict.toList
-                        |> List.map (\( id, kid ) -> ( String.fromInt id, li [] [ viewComment (depth + 1) now collapsedIds id kid ] ))
+                        |> List.map
+                            (\( id, kid ) ->
+                                ( String.fromInt id
+                                , li []
+                                    [ viewComment (depth + 1) now collapsedIds id kid ]
+                                )
+                            )
                     )
             ]
     ]
@@ -241,7 +250,7 @@ viewComment depth now collapsedIds id data =
         ]
         (case data of
             RemoteData.NotAsked ->
-                [ text "" ]
+                []
 
             RemoteData.Loading ->
                 [ text ("Loading comment " ++ String.fromInt id) ]
