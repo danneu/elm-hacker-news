@@ -1,12 +1,12 @@
-import { Elm } from "./src/Main.elm"
+import { Elm } from './src/Main.elm'
 
-if ("serviceWorker" in navigator) {
+if ('serviceWorker' in navigator) {
     navigator.serviceWorker
-        .register(new URL("./service-worker.js", import.meta.url), {
-            scope: ".",
+        .register(new URL('./service-worker.js', import.meta.url), {
+            scope: '.',
         })
         .then((registration) => {
-            console.log("service worker registered", registration)
+            console.log('service worker registered', registration)
         })
 }
 
