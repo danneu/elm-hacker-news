@@ -230,12 +230,12 @@ viewFooter =
         [ p []
             [ text "Built by danneu with "
             , a
-                [ href "https://elm-lang.org", title "elm logo" ]
+                [ href "https://elm-lang.org", title "elm-lang.org logo" ]
                 [ Icon.elm size ]
             ]
         , p []
             [ text "Source code on "
-            , a [ href "https://github.com/danneu/elm-hacker-news", title "github logo" ] [ Icon.github size ]
+            , a [ href "https://github.com/danneu/elm-hacker-news", title "Github.com logo" ] [ Icon.github size ]
             ]
         ]
 
