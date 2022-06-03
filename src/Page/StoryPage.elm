@@ -9,6 +9,7 @@ import Html.Events exposing (onClick)
 import Html.Keyed
 import Html.Parser
 import Http
+import Icon
 import RemoteData exposing (WebData)
 import Set exposing (Set)
 import Story exposing (Story)
@@ -190,7 +191,7 @@ viewLoadedComment depth now collapsedIds comment =
     in
     [ header
         [ class "byline" ]
-        [ a [ href ("/users/" ++ comment.by) ] [ text comment.by ]
+        [ a [ href ("/users/" ++ comment.by) ] [ Icon.user 18, text comment.by ]
         , text " "
 
         -- , span [ style "word-break" "break-all" ] [ text (Debug.toString comment.allKidIds) ]
@@ -208,6 +209,7 @@ viewLoadedComment depth now collapsedIds comment =
       else
         footer
             [ class "comment-replies"
+            , class ("depth-" ++ String.fromInt (modBy 3 depth))
             ]
             [ div
                 [ class "gutter"
@@ -291,7 +293,10 @@ viewStoryInfo story maybeNow =
             )
             [ div [ class "byline", style "margin-bottom" "1rem" ]
                 [ text (String.fromInt story.score ++ " points by ")
-                , a [ class "author", href ("/users/" ++ story.by) ] [ text story.by ]
+                , a [ class "author", href ("/users/" ++ story.by) ]
+                    [ Icon.user 18
+                    , text story.by
+                    ]
                 , text " "
                 , case maybeNow of
                     Just now ->

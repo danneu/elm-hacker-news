@@ -1,38 +1,37 @@
 @import '_reset.css';
 
-:root {
-    --hn-bg: #f6f6f0;
-    --hn-gray: #696969;
-    --hn-orange: #ed702d;
-}
+$hn-bg: #f6f6f0;
+$hn-gray: #696969;
+$hn-orange: #ed702d;
+$h1-size: 2rem;
+$h2-size: 1.5rem;
+$h3-size: 1.25rem;
+// Comment nesting colors
+$a: #757573;
+$b: #b5b5b1;
+$c: #dbdbd7;
 
 body {
-    background-color: var(--hn-bg);
+    background-color: $hn-bg;
     font-family: Verdana, Geneva, sans-serif;
 }
 
-:root {
-    --h1-size: 2rem;
-    --h2-size: 1.5rem;
-    --h3-size: 1.25rem;
-}
-
 h1 {
-    font-size: var(--h1-size);
-    line-height: calc(var(--h1-size) * 1.44);
-    margin-bottom: var(--h1-size);
+    font-size: $h1-size;
+    line-height: calc($h1-size * 1.44);
+    margin-bottom: $h1-size;
 }
 
 h2 {
-    font-size: var(--h2-size);
-    line-height: calc(var(--h2-size) * 1.44);
-    margin-bottom: var(--h2-size);
+    font-size: $h2-size;
+    line-height: calc($h2-size * 1.44);
+    margin-bottom: $h2-size;
 }
 
 h3 {
-    font-size: var(--h3-size);
-    line-height: calc(var(--h3-size) * 1.44);
-    margin-bottom: var(--h3-size);
+    font-size: $h3-size;
+    line-height: calc($h3-size * 1.44);
+    margin-bottom: $h3-size;
 }
 
 p {
@@ -65,10 +64,10 @@ main {
 // GLOBAL FOOTER
 
 .global-footer {
-    color: var(--hn-gray);
+    color: $hn-gray;
     text-align: center;
     a {
-        color: var(--hn-gray);
+        color: $hn-gray;
     }
     svg {
         vertical-align: middle;
@@ -78,7 +77,7 @@ main {
 // HOMEPAGE
 
 .HomePage {
-    color: var(--hn-gray);
+    color: $hn-gray;
 
     li {
         margin-bottom: 1rem;
@@ -103,7 +102,7 @@ main {
 // NAVBAR
 
 .navbar {
-    background-color: var(--hn-orange);
+    background-color: $hn-orange;
     display: flex;
     align-items: center;
     padding: 0.5rem;
@@ -153,21 +152,21 @@ main {
 
 // STORY PAGE
 
-// Comment nesting colors
-:root {
-    --a: #757573;
-    --b: #b5b5b1;
-    --c: #dbdbd7;
+.user-icon {
+    padding-right: 3px;
+    vertical-align: text-bottom;
+    color: lighten($hn-gray, 15%);
 }
-
 .StoryPage .title small {
     font-size: 1rem;
-    color: var(--hn-gray);
+    color: $hn-gray;
+}
+.comment-replies {
+    border-top: 1px dotted;
+    border-bottom: 1px dotted;
+    border-color: $b;
 }
 
-.comment li {
-    margin: 0;
-}
 .comment p {
     margin-bottom: 0.5rem;
 }
@@ -181,7 +180,7 @@ button,
     cursor: pointer;
 }
 .gutter:hover {
-    background-color: var(--c);
+    background-color: $c;
 }
 
 .comment-replies {
@@ -194,15 +193,15 @@ button,
     width: 20px;
     border-left-width: 5px;
     border-left-style: solid;
-}
-.gutter-depth-0 {
-    border-color: var(--a);
-}
-.gutter-depth-1 {
-    border-color: var(--b);
-}
-.gutter-depth-2 {
-    border-color: var(--c);
+    &.gutter-depth-0 {
+        border-color: $a;
+    }
+    &.gutter-depth-1 {
+        border-color: $b;
+    }
+    &.gutter-depth-2 {
+        border-color: $c;
+    }
 }
 
 // COMMENT
@@ -221,7 +220,7 @@ button,
 
 .byline {
     margin-bottom: 0.5rem;
-    color: var(--hn-gray);
+    color: $hn-gray;
     a {
         color: unset;
         text-decoration: none;
