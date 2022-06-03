@@ -153,6 +153,13 @@ main {
 
 // STORY PAGE
 
+// Comment nesting colors
+:root {
+    --a: #757573;
+    --b: #b5b5b1;
+    --c: #dbdbd7;
+}
+
 .StoryPage .title small {
     font-size: 1rem;
     color: var(--hn-gray);
@@ -173,9 +180,8 @@ button,
 .gutter {
     cursor: pointer;
 }
-
 .gutter:hover {
-    background-color: #ccc;
+    background-color: var(--c);
 }
 
 .comment-replies {
@@ -186,42 +192,40 @@ button,
 }
 .comment-replies > .gutter {
     width: 20px;
+    border-left-width: 5px;
+    border-left-style: solid;
 }
 
-:root {
-    --r: #fd79a8;
-    --g: #55efc4;
-    --b: #74b9ff;
-}
-
-.comment-replies > .gutter {
-    border-left: 5px solid var(--b);
-}
-.comment-replies .comment-replies > .gutter {
-    border-left: 5px solid var(--r);
-}
-.comment-replies .comment-replies .comment-replies > .gutter {
-    border-left: 5px solid var(--g);
-}
-.comment-replies .comment-replies .comment-replies .comment-replies > .gutter {
-    border-left: 5px solid var(--b);
-}
-.comment-replies
-    .comment-replies
-    .comment-replies
-    .comment-replies
-    .comment-replies
-    > .gutter {
-    border-left: 5px solid var(--r);
-}
-.comment-replies
-    .comment-replies
-    .comment-replies
-    .comment-replies
-    .comment-replies
-    .comment-replies
-    > .gutter {
-    border-left: 5px solid var(--g);
+.comment-replies {
+    & > .gutter {
+        border-color: var(--a);
+    }
+    .comment-replies {
+        & > .gutter {
+            border-color: var(--b);
+        }
+        .comment-replies {
+            & > .gutter {
+                border-color: var(--c);
+            }
+            .comment-replies {
+                & > .gutter {
+                    border-color: var(--a);
+                }
+                .comment-replies {
+                    & > .gutter {
+                        border-color: var(--b);
+                    }
+                    .comment-replies {
+                        & > .gutter {
+                            // --c is the final color for all further children
+                            border-color: var(--c);
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 
 // COMMENT
